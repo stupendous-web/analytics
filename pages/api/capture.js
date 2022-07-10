@@ -10,12 +10,7 @@ export default async function handler(req, res) {
     optionsSuccessStatus: 200,
   });
   const pageview = await prisma.pageview.create({
-    data: {
-      path: "",
-      referrer: "",
-      height: 0,
-      width: 0,
-    },
+    data: {},
   });
   res.json(pageview);
 }
