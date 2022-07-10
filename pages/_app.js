@@ -1,7 +1,6 @@
-import '../styles/globals.css'
+import uikit from "uikit";
+import "../styles/uikit/uikit.css";
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+export default function MyApp({ Component, pageProps }) {
+  return <Component {...pageProps} />;
 }
-
-export default MyApp
