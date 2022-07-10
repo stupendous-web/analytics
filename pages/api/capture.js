@@ -12,12 +12,12 @@ export default async function handler(req, res) {
   try {
     await prisma.pageview.create({
       data: {
-        site: req.body.site || null,
-        anonymousId: req.body.anonymousId || null,
-        path: req.body.path || null,
-        referrer: req.body.referrer || null,
-        height: req.body.height || null,
-        width: req.body.width || null,
+        site: req.body.site,
+        anonymousId: req.body.anonymousId,
+        path: req.body.path,
+        referrer: req.body.referrer,
+        height: req.body.height,
+        width: req.body.width,
       },
     });
   } catch (error) {
