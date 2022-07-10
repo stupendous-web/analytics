@@ -2,9 +2,8 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export default async function handler(req, res) {
-  console.log("hi");
-  await prisma.pageview.create({
+export default function handle(req, res) {
+  prisma.pageview.create({
     data: {
       site: req.body.site,
       anonymousId: req.body.anonymousId,
