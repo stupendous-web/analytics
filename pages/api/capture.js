@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     await prisma.pageview.create({
       data: {
         path: req.body.path,
-        referrer: req.body.referrer,
+        referrer: req.body.referrer || null,
         height: req.body.height,
         width: req.body.width,
       },
