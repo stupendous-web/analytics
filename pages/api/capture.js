@@ -12,6 +12,8 @@ export default async function handler(req, res) {
   try {
     await prisma.pageview.create({
       data: {
+        site: req.body.site || null,
+        anonymousId: req.body.anonymousId || null,
         path: req.body.path || null,
         referrer: req.body.referrer || null,
         height: req.body.height || null,
