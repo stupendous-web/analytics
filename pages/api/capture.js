@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     origin: "*",
     optionsSuccessStatus: 200,
   });
-  const pageview = await prisma.pageview.create({
+  const pageview = await prisma.test.create({
     data: {},
   });
   res.json(pageview);
