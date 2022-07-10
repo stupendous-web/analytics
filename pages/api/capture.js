@@ -1,23 +1,21 @@
-import { PrismaClient } from "@prisma/client";
 import NextCors from "nextjs-cors";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export default async function handle(req, res) {
+export default async function handler(req, res) {
   await NextCors(req, res, {
-    // Options
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
     origin: "*",
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    optionsSuccessStatus: 200,
   });
-  const pageview = await prisma.pageview.create({
+  await prisma.pageview.create({
     data: {
-      path: "/",
-      referrer: "",
-      search: "",
-      height: 0,
-      width: 0,
+      path: req.body.path,
+      referrer: req.body.referrer,
+      height: req.body.height,
+      width: req.body.width,
     },
   });
-  res.json(pageview);
+  res.json("Good things come to those who wait.");
 }
