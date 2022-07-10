@@ -9,18 +9,13 @@ export default async function handler(req, res) {
     origin: "*",
     optionsSuccessStatus: 200,
   });
-  try {
-    await prisma.pageview.create({
-      data: {
-        path: "",
-        referrer: "",
-        height: 0,
-        width: 0,
-      },
-    });
-  } catch (error) {
-    res.status(500).send(error);
-    throw error;
-  }
-  res.json("Good things come to those who wait.");
+  const pageview = await prisma.pageview.create({
+    data: {
+      path: "",
+      referrer: "",
+      height: 0,
+      width: 0,
+    },
+  });
+  res.json(pageview);
 }
