@@ -12,14 +12,13 @@ export default async function handler(req, res) {
   try {
     await prisma.pageview.create({
       data: {
-        path: "null",
-        referrer: "null",
-        height: 0,
-        width: 0,
+        path: req.body.path || "null",
+        referrer: req.body.referrer || "null",
+        height: req.body.height || null,
+        width: req.body.width || null,
       },
     });
   } catch (error) {
-    res.status(500).send(error);
     throw error;
   }
   res.json("Good things come to those who wait.");
