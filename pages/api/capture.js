@@ -19,6 +19,7 @@ export default async function handler(req, res) {
       },
     });
   } catch (error) {
+    res.status(500).send(error);
     throw error;
   }
   res.json("Good things come to those who wait.");
