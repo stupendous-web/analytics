@@ -12,14 +12,10 @@ datasource db {
 
 model Pageview {
   id        Int       @id @default(autoincrement())
+  path      String?   @db.VarChar(255)
+  referrer  String?   @db.VarChar(255)
+  height    Int?
+  width     Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model Test {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("tests")
 }

@@ -9,8 +9,18 @@ export default async function handler(req, res) {
     origin: "*",
     optionsSuccessStatus: 200,
   });
-  const pageview = await prisma.test.create({
-    data: {},
-  });
-  res.json(pageview);
+  try {
+    await prisma.pageview.create({
+      data: {
+        path: req.body.path || null,
+        referrer: req.body.referrer || null,
+        height: req.body.height || null,
+        width: req.body.width || null,
+      },
+    });
+  } catch (error) {
+    res.status(500).send(error);
+    throw error;
+  }
+  res.json("Good things come to those who wait.");
 }
