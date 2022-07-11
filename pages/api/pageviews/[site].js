@@ -22,10 +22,8 @@ export default async function handle(request, response) {
         contains: site,
       },
     },
-    _count: {
-      anonymousId: true,
-    },
   });
+  console.log(sessionCount);
   const referrers = await prisma.pageview.groupBy({
     by: ["referrer"],
     where: {

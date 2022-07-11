@@ -31,7 +31,7 @@ export default function Site() {
     if (!router.isReady) return;
     axios.get("/api/pageviews/" + site).then((response) => {
       setPageviewCount(response.data.pageviewCount[0]);
-      setSessionCount(response.data.sessionCount[0]);
+      setSessionCount(response.data.sessionCount.length);
       setReferrers(response.data.referrers);
       setPaths(response.data.paths);
       setLoading(false);
@@ -50,7 +50,7 @@ export default function Site() {
             <div>
               <div className={"uk-card uk-card-secondary uk-card-body"}>
                 <h1 className={"uk-heading-large uk-margin-remove"}>
-                  {sessionCount?._count?.anonymousId}
+                  {sessionCount}
                 </h1>
                 <p>Sessions</p>
               </div>
@@ -58,7 +58,7 @@ export default function Site() {
             <div>
               <div className={"uk-card uk-card-secondary uk-card-body"}>
                 <h1 className={"uk-heading-large uk-margin-remove"}>
-                  {pageviewCount?._count?.site}
+                  {sessionCount > 0 ? pageviewCount?._count?.site : 0}
                 </h1>
                 <p>Pageviews</p>
               </div>
