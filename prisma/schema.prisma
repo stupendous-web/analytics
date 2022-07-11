@@ -15,7 +15,7 @@ model Pageview {
   site          String?     @db.VarChar(255)
   anonymousId   String?     @db.VarChar(255)
   path          String?     @db.VarChar(255)
-  referrer      String?     @db.VarChar(255)
+  referrer      String      @db.VarChar(255) @default("Direct")
   height        Int?
   width         Int?
   createdAt     DateTime    @default(now())
