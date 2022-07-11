@@ -11,14 +11,18 @@ datasource db {
 }
 
 model Pageview {
-  id            Int         @id @default(autoincrement())
-  site          String?     @db.VarChar(255)
-  anonymousId   String?     @db.VarChar(255)
-  path          String?     @db.VarChar(255)
-  referrer      String      @db.VarChar(255) @default("Direct")
-  height        Int?
-  width         Int?
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  id                Int         @id @default(autoincrement())
+  site              String?     @db.VarChar(255)
+  anonymousId       String?     @db.VarChar(255)
+  path              String?     @db.VarChar(255)
+  referrer          String      @db.VarChar(255) @default("Direct")
+  os                String?     @db.VarChar(255)
+  osVersion         String?     @db.VarChar(255)
+  browser           String?     @db.VarChar(255)
+  browserVersion    String?     @db.VarChar(255)
+  height            Int?
+  width             Int?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
   @@map("pageviews")
 }
