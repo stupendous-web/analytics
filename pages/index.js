@@ -3,6 +3,12 @@ import Head from "next/head";
 export default function Home() {
   return (
     <>
+      <Head>
+        <title>
+          Analytics | Stupendous Web | If you want to build community, build a
+          stupendous web app
+        </title>
+      </Head>
       <div
         className={
           "uk-section uk-section-primary uk-flex uk-flex-center uk-flex-middle"
