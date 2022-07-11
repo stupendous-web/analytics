@@ -2,8 +2,8 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export default async function handle(requestuest, response) {
-  if (requestuest.method === "POST") {
+export default async function handle(request, response) {
+  if (request.method === "POST") {
     await prisma.pageview.create({
       data: {
         site: request.body.site,

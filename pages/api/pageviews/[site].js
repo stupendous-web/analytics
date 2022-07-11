@@ -4,11 +4,13 @@ const prisma = new PrismaClient();
 
 export default async function handle(request, response) {
   if (request.method === "GET") {
+    const { site } = request.query;
+
     const count = await prisma.pageview.groupBy({
       by: ["site"],
       where: {
         site: {
-          contains: "stupendous-web",
+          contains: site,
         },
       },
       _count: {
@@ -20,7 +22,7 @@ export default async function handle(request, response) {
       by: ["referrer"],
       where: {
         site: {
-          contains: "stupendous-web",
+          contains: site,
         },
       },
       _count: {
@@ -36,7 +38,7 @@ export default async function handle(request, response) {
       by: ["path"],
       where: {
         site: {
-          contains: "stupendous-web",
+          contains: site,
         },
       },
       _count: {
