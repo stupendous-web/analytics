@@ -10,6 +10,7 @@ export default function Site() {
   const [sessionCount, setSessionCount] = useState();
   const [referrers, setReferrers] = useState();
   const [paths, setPaths] = useState();
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (!router.isReady) return;
     axios.get("/api/pageviews/" + site).then((response) => {
@@ -17,6 +18,7 @@ export default function Site() {
       setSessionCount(response.data.sessionCount[0]);
       setReferrers(response.data.referrers);
       setPaths(response.data.paths);
+      setLoading(false);
     });
   }, [router.isReady]);
 
@@ -111,6 +113,17 @@ export default function Site() {
           </table>
         </div>
       </div>
+      {loading && (
+        <div
+          className={
+            "uk-width-1-1 uk-section-default uk-flex uk-flex-center uk-flex-middle uk-position-fixed"
+          }
+          uk-height-viewport={""}
+          style={{ top: 0, left: 0 }}
+        >
+          <div uk-spinner={""} />
+        </div>
+      )}
     </>
   );
 }
