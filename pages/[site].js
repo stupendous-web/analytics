@@ -88,7 +88,7 @@ export default function Site() {
             <div className={"uk-width-3-4@s"}>
               <table
                 className={
-                  "uk-table uk-table-striped uk-table-hover uk-table-small"
+                  "uk-table uk-table-striped uk-table-hover uk-table-small uk-table-responsive"
                 }
               >
                 <thead>
@@ -137,7 +137,11 @@ export default function Site() {
           <h2 id={"paths"}>Top Pages</h2>
           <div uk-grid={""}>
             <div className={"uk-width-3-4@s"}>
-              <table className={"uk-table uk-table-striped uk-table-small"}>
+              <table
+                className={
+                  "uk-table uk-table-striped uk-table-hover uk-table-small uk-table-responsive"
+                }
+              >
                 <thead>
                   <tr>
                     <th>Page Path</th>
