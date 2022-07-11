@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 export default async function handle(request, response) {
   const { site } = request.query;
-  const count = await prisma.pageview.groupBy({
+  const pageviewCount = await prisma.pageview.groupBy({
     by: ["site"],
     where: {
       site: {
@@ -15,7 +15,17 @@ export default async function handle(request, response) {
       site: true,
     },
   });
-  console.log(count[0]?._count?.site);
+  const sessionCount = await prisma.pageview.groupBy({
+    by: ["anonymousId"],
+    where: {
+      site: {
+        contains: site,
+      },
+    },
+    _count: {
+      anonymousId: true,
+    },
+  });
   const referrers = await prisma.pageview.groupBy({
     by: ["referrer"],
     where: {
@@ -48,5 +58,10 @@ export default async function handle(request, response) {
       },
     },
   });
-  response.json({ count: count, referrers: referrers, paths: paths });
+  response.json({
+    pageviewCount: pageviewCount,
+    sessionCount: sessionCount,
+    referrers: referrers,
+    paths: paths,
+  });
 }

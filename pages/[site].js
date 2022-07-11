@@ -6,13 +6,15 @@ export default function Site() {
   const router = useRouter();
   const { site } = router.query;
 
-  const [count, setCount] = useState();
+  const [pageviewCount, setPageviewCount] = useState();
+  const [sessionCount, setSessionCount] = useState();
   const [referrers, setReferrers] = useState();
   const [paths, setPaths] = useState();
   useEffect(() => {
     if (!router.isReady) return;
     axios.get("/api/pageviews/" + site).then((response) => {
-      setCount(response.data.count[0]);
+      setPageviewCount(response.data.pageviewCount[0]);
+      setSessionCount(response.data.sessionCount[0]);
       setReferrers(response.data.referrers);
       setPaths(response.data.paths);
     });
@@ -24,14 +26,23 @@ export default function Site() {
         <div className={"uk-container uk-container-expand"}>
           {site && <h1>@{site}</h1>}
           <div
-            className={"uk-child-width-expand uk-text-center uk-grid-match"}
+            className={"uk-child-width-1-2 uk-text-center uk-grid-match"}
             uk-grid={""}
           >
             <div>
               <div className={"uk-card uk-card-default uk-card-body"}>
                 <div className={"uk-text-small"}>All Time</div>
                 <h1 className={"uk-heading-large uk-margin-remove"}>
-                  {count?._count?.site}
+                  {sessionCount?._count?.anonymousId}
+                </h1>
+                <div className={"uk-text-small"}>Sessions</div>
+              </div>
+            </div>
+            <div>
+              <div className={"uk-card uk-card-default uk-card-body"}>
+                <div className={"uk-text-small"}>All Time</div>
+                <h1 className={"uk-heading-large uk-margin-remove"}>
+                  {pageviewCount?._count?.site}
                 </h1>
                 <div className={"uk-text-small"}>Pageviews</div>
               </div>
