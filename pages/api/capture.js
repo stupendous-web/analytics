@@ -2,20 +2,22 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export default async function handle(req, res) {
-  await prisma.pageview.create({
-    data: {
-      site: req.body.site,
-      anonymousId: req.body.anonymousId,
-      path: req.body.path,
-      referrer: req.body.referrer,
-      os: req.body.os,
-      osVersion: req.body.osVersion,
-      browser: req.body.browser,
-      browserVersion: req.body.browserVersion,
-      height: req.body.height,
-      width: req.body.width,
-    },
-  });
-  res.json("Good things come to those who wait.");
+export default async function handle(requestuest, response) {
+  if (requestuest.method === "POST") {
+    await prisma.pageview.create({
+      data: {
+        site: request.body.site,
+        anonymousId: request.body.anonymousId,
+        path: request.body.path,
+        referrer: request.body.referrer,
+        os: request.body.os,
+        osVersion: request.body.osVersion,
+        browser: request.body.browser,
+        browserVersion: request.body.browserVersion,
+        height: request.body.height,
+        width: request.body.width,
+      },
+    });
+    response.json("Good things come to those who wait.");
+  }
 }
