@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import "chart.js/auto";
+import { Chart } from "react-chartjs-2";
 
 export default function Site() {
   const router = useRouter();
@@ -10,6 +12,20 @@ export default function Site() {
   const [sessionCount, setSessionCount] = useState();
   const [referrers, setReferrers] = useState();
   const [paths, setPaths] = useState();
+
+  const chartColors = [
+    "#ec008c",
+    "#d4007f",
+    "#ba0070",
+    "#a10060",
+    "#870051",
+    "#6e0042",
+    "#540032",
+    "#3b0023",
+    "#210014",
+    "#080005",
+  ];
+
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (!router.isReady) return;
@@ -32,21 +48,19 @@ export default function Site() {
             uk-grid={""}
           >
             <div>
-              <div className={"uk-card uk-card-default uk-card-body"}>
-                <div className={"uk-text-small"}>All Time</div>
+              <div className={"uk-card uk-card-secondary uk-card-body"}>
                 <h1 className={"uk-heading-large uk-margin-remove"}>
                   {sessionCount?._count?.anonymousId}
                 </h1>
-                <div className={"uk-text-small"}>Sessions</div>
+                <p>Sessions</p>
               </div>
             </div>
             <div>
-              <div className={"uk-card uk-card-default uk-card-body"}>
-                <div className={"uk-text-small"}>All Time</div>
+              <div className={"uk-card uk-card-secondary uk-card-body"}>
                 <h1 className={"uk-heading-large uk-margin-remove"}>
                   {pageviewCount?._count?.site}
                 </h1>
-                <div className={"uk-text-small"}>Pageviews</div>
+                <p>Pageviews</p>
               </div>
             </div>
           </div>
@@ -70,47 +84,101 @@ export default function Site() {
             </ul>
           </div>
           <h2 id={"referrers"}>Top Sources</h2>
-          <table
-            className={
-              "uk-table uk-table-striped uk-table-hover uk-table-small"
-            }
-          >
-            <thead>
-              <tr>
-                <th>Location</th>
-                <th>Pageviews</th>
-              </tr>
-            </thead>
-            <tbody>
-              {referrers?.map((referrer, key) => {
-                return (
-                  <tr key={key}>
-                    <td>{referrer?.referrer}</td>
-                    <td>{referrer?._count.referrer}</td>
+          <div uk-grid={""}>
+            <div className={"uk-width-3-4@s"}>
+              <table
+                className={
+                  "uk-table uk-table-striped uk-table-hover uk-table-small"
+                }
+              >
+                <thead>
+                  <tr>
+                    <th>Location</th>
+                    <th>Pageviews</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {referrers?.map((referrer, key) => {
+                    return (
+                      <tr key={key}>
+                        <td>{referrer?.referrer}</td>
+                        <td>{referrer?._count.referrer}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <div className={"uk-width-1-4@s"}>
+              <Chart
+                type={"doughnut"}
+                data={{
+                  labels: referrers?.map((referrer) => referrer?.referrer),
+                  datasets: [
+                    {
+                      data: referrers?.map(
+                        (referrer) => referrer?._count.referrer
+                      ),
+                      backgroundColor: chartColors,
+                      hoverOffset: 4,
+                    },
+                  ],
+                }}
+                options={{
+                  plugins: {
+                    legend: {
+                      display: false,
+                    },
+                  },
+                }}
+              />
+            </div>
+          </div>
           <h2 id={"paths"}>Top Pages</h2>
-          <table className={"uk-table uk-table-striped uk-table-small"}>
-            <thead>
-              <tr>
-                <th>Page Path</th>
-                <th>Pageviews</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paths?.map((path, key) => {
-                return (
-                  <tr key={key}>
-                    <td>{path?.path}</td>
-                    <td>{path?._count.path}</td>
+          <div uk-grid={""}>
+            <div className={"uk-width-3-4@s"}>
+              <table className={"uk-table uk-table-striped uk-table-small"}>
+                <thead>
+                  <tr>
+                    <th>Page Path</th>
+                    <th>Pageviews</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {paths?.map((path, key) => {
+                    return (
+                      <tr key={key}>
+                        <td>{path?.path}</td>
+                        <td>{path?._count.path}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <div className={"uk-width-1-4@s"}>
+              <Chart
+                type={"doughnut"}
+                data={{
+                  labels: paths?.map((path) => path?.path),
+                  datasets: [
+                    {
+                      data: paths?.map((path) => path?._count.path),
+                      backgroundColor: chartColors,
+                      hoverOffset: 4,
+                    },
+                  ],
+                }}
+                options={{
+                  plugins: {
+                    legend: {
+                      display: false,
+                    },
+                  },
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
       {loading && (
