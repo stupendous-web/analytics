@@ -3,11 +3,14 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import "chart.js/auto";
 import { Chart } from "react-chartjs-2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 
 export default function Site() {
   const router = useRouter();
   const { site } = router.query;
 
+  const [days, setDays] = useState(7);
   const [pageviewCount, setPageviewCount] = useState();
   const [sessionCount, setSessionCount] = useState();
   const [referrers, setReferrers] = useState();
@@ -38,11 +41,49 @@ export default function Site() {
     });
   }, [router.isReady]);
 
+  useEffect(() => {
+    if (days !== 7) {
+      setLoading(true);
+      axios.get("/api/pageviews/" + site + "?days=" + days).then((response) => {
+        setPageviewCount(response.data.pageviewCount[0]);
+        setSessionCount(response.data.sessionCount.length);
+        setReferrers(response.data.referrers);
+        setPaths(response.data.paths);
+        setLoading(false);
+      });
+    }
+  }, [days]);
+
   return (
     <>
       <div className={"uk-section"} uk-height-viewport={""}>
         <div className={"uk-container uk-container-expand"}>
-          {site && <h1>@{site}</h1>}
+          <div
+            className={
+              "uk-section-default uk-padding-small uk-padding-remove-horizontal"
+            }
+            uk-sticky={""}
+          >
+            {" "}
+            <div className={"uk-flex-middle"} uk-grid={""}>
+              <div className={"uk-width-expand"}>
+                {site && <h1>@{site}</h1>}
+              </div>
+              <div>
+                <select
+                  value={days}
+                  className={"uk-select"}
+                  onChange={(event) => setDays(event.target.value)}
+                >
+                  <option value={1}>Today</option>
+                  <option value={7}>7 Days</option>
+                  <option value={30}>30 Days</option>
+                  <option value={90}>90 Days</option>
+                  <option value={365}>Year</option>
+                </select>
+              </div>
+            </div>
+          </div>
           <div
             className={"uk-child-width-1-2 uk-text-center uk-grid-match"}
             uk-grid={""}
@@ -68,22 +109,22 @@ export default function Site() {
             className={
               "uk-section-default uk-padding-small uk-padding-remove-horizontal"
             }
-            uk-sticky={""}
+            uk-sticky={"offset: 80"}
           >
             <ul className={"uk-subnav uk-margin-remove-bottom"}>
               <li>
-                <a href={"#referrers"} uk-scroll={""}>
+                <a href={"#referrers"} uk-scroll={"offset: 156"}>
                   Top Sources
                 </a>
               </li>
               <li>
-                <a href={"#paths"} uk-scroll={""}>
+                <a href={"#paths"} uk-scroll={"offset: 156"}>
                   Top Pages
                 </a>
               </li>
             </ul>
           </div>
-          <h2 id={"referrers"}>Top Sources</h2>
+          <h2 id={"referrers"}>Popular Sources</h2>
           <div uk-grid={""}>
             <div className={"uk-width-3-4@s"}>
               <table
@@ -101,7 +142,12 @@ export default function Site() {
                   {referrers?.map((referrer, key) => {
                     return (
                       <tr key={key}>
-                        <td>{referrer?.referrer}</td>
+                        <td>
+                          {referrer?.referrer}{" "}
+                          <a href={referrer?.referrer}>
+                            <FontAwesomeIcon icon={faUpRightFromSquare} />
+                          </a>{" "}
+                        </td>
                         <td>{referrer?._count.referrer}</td>
                       </tr>
                     );
@@ -134,7 +180,7 @@ export default function Site() {
               />
             </div>
           </div>
-          <h2 id={"paths"}>Top Pages</h2>
+          <h2 id={"paths"}>Popular Pages</h2>
           <div uk-grid={""}>
             <div className={"uk-width-3-4@s"}>
               <table
