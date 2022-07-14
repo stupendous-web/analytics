@@ -16,6 +16,7 @@ model Pageview {
   anonymousId       String?     @db.VarChar(255)
   path              String?     @db.VarChar(255)
   referrer          String      @db.VarChar(255) @default("Direct")
+  search            String?      @db.VarChar(255)
   os                String?     @db.VarChar(255)
   osVersion         String?     @db.VarChar(255)
   browser           String?     @db.VarChar(255)
