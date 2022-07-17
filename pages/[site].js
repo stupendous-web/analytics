@@ -3,8 +3,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import "chart.js/auto";
 import { Chart } from "react-chartjs-2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
+import Referrers from "../components/Referrers";
 
 export default function Site() {
   const router = useRouter();
@@ -93,7 +92,7 @@ export default function Site() {
                   className={"uk-select"}
                   onChange={(event) => setDays(event.target.value)}
                 >
-                  <option value={1}>Today</option>
+                  <option value={1}>24 Hours</option>
                   <option value={7}>7 Days</option>
                   <option value={30}>30 Days</option>
                   <option value={90}>90 Days</option>
@@ -142,62 +141,11 @@ export default function Site() {
               })}
             </ul>
           </div>
-          <h2 id={"Popular Sources"}>Popular Sources</h2>
-          <div data-uk-grid={""}>
-            <div className={"uk-width-3-4@s"}>
-              <table
-                className={
-                  "uk-table uk-table-striped uk-table-hover uk-table-small uk-table-responsive"
-                }
-              >
-                <thead>
-                  <tr>
-                    <th>Location</th>
-                    <th>Pageviews</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {referrers?.map((referrer, key) => {
-                    return (
-                      <tr key={key}>
-                        <td>
-                          {referrer?.referrer}{" "}
-                          <a href={referrer?.referrer}>
-                            <FontAwesomeIcon icon={faUpRightFromSquare} />
-                          </a>{" "}
-                        </td>
-                        <td>{referrer?._count.referrer}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-            <div className={"uk-width-1-4@s"}>
-              <Chart
-                type={"doughnut"}
-                data={{
-                  labels: referrers?.map((referrer) => referrer?.referrer),
-                  datasets: [
-                    {
-                      data: referrers?.map(
-                        (referrer) => referrer?._count.referrer
-                      ),
-                      backgroundColor: chartColors,
-                      hoverOffset: 4,
-                    },
-                  ],
-                }}
-                options={{
-                  plugins: {
-                    legend: {
-                      display: false,
-                    },
-                  },
-                }}
-              />
-            </div>
-          </div>
+          <Referrers
+            pageviews={pageviews}
+            referrers={referrers}
+            chartColors={chartColors}
+          />
           <h2 id={"Popular Pages"}>Popular Pages</h2>
           <div data-uk-grid={""}>
             <div className={"uk-width-3-4@s"}>
