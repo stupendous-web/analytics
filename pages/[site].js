@@ -129,13 +129,14 @@ export default function Site() {
             }
             data-uk-sticky={"offset: 80"}
           >
-            <ul className={"uk-subnav uk-margin-remove-bottom"}>
+            <ul
+              className={"uk-subnav uk-margin-remove-bottom"}
+              data-uk-scrollspy-nav={"closest: li; scroll: true; offset: 156"}
+            >
               {sections.map((section, key) => {
                 return (
                   <li key={key}>
-                    <a href={"#" + section} data-uk-scroll={"offset: 156"}>
-                      {section}
-                    </a>
+                    <a href={"#" + section}>{section}</a>
                   </li>
                 );
               })}
