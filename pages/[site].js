@@ -10,9 +10,13 @@ export default function Site() {
   const router = useRouter();
   const { site } = router.query;
 
+  const sections = ["Popular Sources", "Popular Pages", "Popular Screens"];
+
   const [days, setDays] = useState(7);
-  const [pageviewCount, setPageviewCount] = useState();
-  const [sessionCount, setSessionCount] = useState();
+  const [pageviews, setPageviews] = useState();
+  const [sessions, setSessions] = useState();
+  const [portrait, setPortrait] = useState();
+  const [landscape, setLandscape] = useState();
   const [referrers, setReferrers] = useState();
   const [paths, setPaths] = useState();
 
@@ -30,42 +34,56 @@ export default function Site() {
   ];
 
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    if (!router.isReady) return;
-    axios.get("/api/pageviews/" + site).then((response) => {
-      setPageviewCount(response.data.pageviewCount[0]);
-      setSessionCount(response.data.sessionCount.length);
+
+  const get = () => {
+    const url = days
+      ? "/api/pageviews/" + site + "?days=" + days
+      : "/api/pageviews/" + site;
+    axios.get(url).then((response) => {
+      setPageviews(response.data.pageviews);
+      setSessions(response.data.sessions.length);
       setReferrers(response.data.referrers);
       setPaths(response.data.paths);
       setLoading(false);
     });
+  };
+
+  useEffect(() => {
+    if (pageviews) {
+      // Screen Sizes
+      setPortrait(
+        pageviews.filter((pageview) => pageview.height > pageview.width).length
+      );
+      setLandscape(
+        pageviews.filter((pageview) => pageview.height < pageview.width).length
+      );
+    }
+  }, [pageviews]);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    get();
   }, [router.isReady]);
 
   useEffect(() => {
     if (days !== 7) {
       setLoading(true);
-      axios.get("/api/pageviews/" + site + "?days=" + days).then((response) => {
-        setPageviewCount(response.data.pageviewCount[0]);
-        setSessionCount(response.data.sessionCount.length);
-        setReferrers(response.data.referrers);
-        setPaths(response.data.paths);
-        setLoading(false);
-      });
+      get();
     }
   }, [days]);
 
   return (
     <>
-      <div className={"uk-section"} uk-height-viewport={""}>
+      <div className={"uk-section"} data-uk-height-viewport={""}>
         <div className={"uk-container uk-container-expand"}>
           <div
             className={
               "uk-section-default uk-padding-small uk-padding-remove-horizontal"
             }
-            uk-sticky={""}
+            data-uk-sticky={""}
           >
             {" "}
-            <div className={"uk-flex-middle"} uk-grid={""}>
+            <div className={"uk-flex-middle"} data-uk-grid={""}>
               <div className={"uk-width-expand"}>
                 {site && <h1>@{site}</h1>}
               </div>
@@ -86,12 +104,12 @@ export default function Site() {
           </div>
           <div
             className={"uk-child-width-1-2 uk-text-center uk-grid-match"}
-            uk-grid={""}
+            data-uk-grid={""}
           >
             <div>
               <div className={"uk-card uk-card-secondary uk-card-body"}>
                 <h1 className={"uk-heading-large uk-margin-remove"}>
-                  {sessionCount}
+                  {sessions}
                 </h1>
                 <p>Sessions</p>
               </div>
@@ -99,7 +117,7 @@ export default function Site() {
             <div>
               <div className={"uk-card uk-card-secondary uk-card-body"}>
                 <h1 className={"uk-heading-large uk-margin-remove"}>
-                  {sessionCount > 0 ? pageviewCount?._count?.site : 0}
+                  {pageviews?.length}
                 </h1>
                 <p>Pageviews</p>
               </div>
@@ -109,23 +127,22 @@ export default function Site() {
             className={
               "uk-section-default uk-padding-small uk-padding-remove-horizontal"
             }
-            uk-sticky={"offset: 80"}
+            data-uk-sticky={"offset: 80"}
           >
             <ul className={"uk-subnav uk-margin-remove-bottom"}>
-              <li>
-                <a href={"#referrers"} uk-scroll={"offset: 156"}>
-                  Top Sources
-                </a>
-              </li>
-              <li>
-                <a href={"#paths"} uk-scroll={"offset: 156"}>
-                  Top Pages
-                </a>
-              </li>
+              {sections.map((section, key) => {
+                return (
+                  <li key={key}>
+                    <a href={"#" + section} data-uk-scroll={"offset: 156"}>
+                      {section}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
-          <h2 id={"referrers"}>Popular Sources</h2>
-          <div uk-grid={""}>
+          <h2 id={"Popular Sources"}>Popular Sources</h2>
+          <div data-uk-grid={""}>
             <div className={"uk-width-3-4@s"}>
               <table
                 className={
@@ -180,8 +197,8 @@ export default function Site() {
               />
             </div>
           </div>
-          <h2 id={"paths"}>Popular Pages</h2>
-          <div uk-grid={""}>
+          <h2 id={"Popular Pages"}>Popular Pages</h2>
+          <div data-uk-grid={""}>
             <div className={"uk-width-3-4@s"}>
               <table
                 className={
@@ -229,6 +246,62 @@ export default function Site() {
               />
             </div>
           </div>
+          <h2 id={"Popular Screens"}>Screens</h2>
+          <div data-uk-grid={""}>
+            <div className={"uk-width-3-4@s"}>
+              <table
+                className={
+                  "uk-table uk-table-striped uk-table-hover uk-table-small uk-table-responsive"
+                }
+              >
+                <thead>
+                  <tr>
+                    <th>Width</th>
+                    <th>Pageviews</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Portrait</td>
+                    <td>{portrait}</td>
+                  </tr>
+                  <tr>
+                    <td>Landscape</td>
+                    <td>{landscape}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div className={"uk-width-1-4@s"}>
+              <Chart
+                type={"doughnut"}
+                data={{
+                  labels: ["Portrait", "Landscape"],
+                  datasets: [
+                    {
+                      data: [
+                        pageviews?.filter(
+                          (pageview) => pageview.height > pageview.width
+                        ).length,
+                        pageviews?.filter(
+                          (pageview) => pageview.height < pageview.width
+                        ).length,
+                      ],
+                      backgroundColor: chartColors,
+                      hoverOffset: 4,
+                    },
+                  ],
+                }}
+                options={{
+                  plugins: {
+                    legend: {
+                      display: false,
+                    },
+                  },
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
       {loading && (
@@ -236,10 +309,10 @@ export default function Site() {
           className={
             "uk-width-1-1 uk-section-default uk-flex uk-flex-center uk-flex-middle uk-position-fixed"
           }
-          uk-height-viewport={""}
+          data-uk-height-viewport={""}
           style={{ top: 0, left: 0 }}
         >
-          <div uk-spinner={""} />
+          Loading...
         </div>
       )}
     </>

@@ -16,16 +16,9 @@ export default async function handle(request, response) {
       lte: moment().format(),
     },
   };
-  const sessionCount = await prisma.pageview.groupBy({
+  const sessions = await prisma.pageview.groupBy({
     by: ["anonymousId"],
     where: where,
-  });
-  const pageviewCount = await prisma.pageview.groupBy({
-    by: ["site"],
-    where: where,
-    _count: {
-      site: true,
-    },
   });
   const referrers = await prisma.pageview.groupBy({
     by: ["referrer"],
@@ -51,9 +44,12 @@ export default async function handle(request, response) {
       },
     },
   });
+  const pageviews = await prisma.pageview.findMany({
+    where: where,
+  });
   response.json({
-    sessionCount: sessionCount,
-    pageviewCount: pageviewCount,
+    pageviews: pageviews,
+    sessions: sessions,
     referrers: referrers,
     paths: paths,
   });
