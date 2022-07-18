@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import "chart.js/auto";
 import { Chart } from "react-chartjs-2";
+
+import Time from "../components/Times";
 import Referrers from "../components/Referrers";
 
 export default function Site() {
@@ -141,6 +143,7 @@ export default function Site() {
               })}
             </ul>
           </div>
+          <Time pageviews={pageviews} />
           <Referrers
             pageviews={pageviews}
             referrers={referrers}
