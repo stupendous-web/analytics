@@ -24,7 +24,11 @@ export default function Referrers({ pageviews, referrers, chartColors }) {
     searchEngines.includes(pageview?.referrer)
   ).length;
 
-  const socialMediaPlatforms = ["https://t.co/", "https://l.facebook.com/"];
+  const socialMediaPlatforms = [
+    "https://t.co/",
+    "https://l.facebook.com/",
+    "https://www.reddit.com/",
+  ];
   const social = pageviews?.filter((pageview) =>
     socialMediaPlatforms.includes(pageview?.referrer)
   ).length;
