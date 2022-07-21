@@ -25,6 +25,7 @@ export default function Times({ pageviews }) {
 
   return (
     <>
+      <h2>Pageviews Over Time</h2>
       <div className={"uk-height-medium"}>
         <Chart
           type={"line"}
