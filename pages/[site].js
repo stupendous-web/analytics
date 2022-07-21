@@ -15,6 +15,7 @@ export default function Site() {
 
   const [days, setDays] = useState(7);
   const [pageviews, setPageviews] = useState();
+  const [pageviewsOverTime, setPageviewsOverTime] = useState();
   const [sessions, setSessions] = useState();
   const [portrait, setPortrait] = useState();
   const [landscape, setLandscape] = useState();
@@ -42,6 +43,7 @@ export default function Site() {
       : "/api/pageviews/" + site;
     axios.get(url).then((response) => {
       setPageviews(response.data.pageviews);
+      setPageviewsOverTime(response.data.pageviewsOverTime);
       setSessions(response.data.sessions.length);
       setReferrers(response.data.referrers);
       setPaths(response.data.paths);
@@ -143,7 +145,7 @@ export default function Site() {
               })}
             </ul>
           </div>
-          <Time pageviews={pageviews} />
+          <Time pageviewsOverTime={pageviewsOverTime} />
           <Referrers
             pageviews={pageviews}
             referrers={referrers}

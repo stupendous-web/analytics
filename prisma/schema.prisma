@@ -23,7 +23,6 @@ model Pageview {
   browserVersion    String?     @db.VarChar(255)
   height            Int?
   width             Int?
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
+  createdAt         DateTime    @default(now()) @db.Date
   @@map("pageviews")
 }

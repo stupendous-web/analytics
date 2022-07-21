@@ -47,8 +47,19 @@ export default async function handle(request, response) {
   const pageviews = await prisma.pageview.findMany({
     where: where,
   });
+  const pageviewsOverTime = await prisma.pageview.groupBy({
+    by: ["createdAt"],
+    where: where,
+    _count: {
+      anonymousId: true,
+    },
+    orderBy: {
+      createdAt: "asc",
+    },
+  });
   response.json({
     pageviews: pageviews,
+    pageviewsOverTime: pageviewsOverTime,
     sessions: sessions,
     referrers: referrers,
     paths: paths,
