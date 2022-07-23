@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import "chart.js/auto";
-import { Chart } from "react-chartjs-2";
 
 import Time from "../components/Times";
 import Referrers from "../components/Referrers";
@@ -15,15 +14,6 @@ export default function Site() {
 
   const [days, setDays] = useState(7);
   const [data, setData] = useState();
-  const [sessions, setSessions] = useState();
-  const [pageviews, setPageviews] = useState();
-  const [pageviewsOverTime, setPageviewsOverTime] = useState();
-  const [sessionsOverTime, setSessionsOverTime] = useState();
-  const [portrait, setPortrait] = useState();
-  const [landscape, setLandscape] = useState();
-  const [referrerSessions, setReferrerSessions] = useState();
-  const [referrerPageviews, setReferrerPageviews] = useState();
-  const [paths, setPaths] = useState();
 
   const chartColors = [
     "#ec008c",
@@ -50,10 +40,6 @@ export default function Site() {
       : api + "pageviews/" + site;
     axios.get(url).then((response) => {
       setData(response.data);
-      setSessions(response.data.sessions);
-      setPageviews(response.data.pageviews);
-      setPageviewsOverTime(response.data.pageviewsOverTime);
-      setSessionsOverTime(response.data.sessionsOverTime);
     });
     setLoading(false);
   };
@@ -71,7 +57,7 @@ export default function Site() {
     }
 
      */
-  }, [pageviews]);
+  }, [data]);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -156,108 +142,10 @@ export default function Site() {
             </ul>
           </div>
           <Time
-            sessionsOverTime={data?.sessionsOverTime}
-            pageviewsOverTime={data?.pageviewsOverTime}
+            sessions={data?.sessionsOverTime}
+            pageviews={data?.pageviewsOverTime}
           />
-          {"referrer cmoponent"}
-          <h2 id={"Popular Pages"}>Popular Pages</h2>
-          <div data-uk-grid={""}>
-            <div className={"uk-width-3-4@s"}>
-              <table
-                className={
-                  "uk-table uk-table-striped uk-table-hover uk-table-small uk-table-responsive"
-                }
-              >
-                <thead>
-                  <tr>
-                    <th>Page Path</th>
-                    <th>Pageviews</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {paths?.map((path, key) => {
-                    return (
-                      <tr key={key}>
-                        <td>{path?.path}</td>
-                        <td>{path?._count.path}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-            <div className={"uk-width-1-4@s"}>
-              <Chart
-                type={"doughnut"}
-                data={{
-                  labels: paths?.map((path) => path?.path),
-                  datasets: [
-                    {
-                      data: paths?.map((path) => path?._count.path),
-                      backgroundColor: chartColors,
-                      hoverOffset: 4,
-                    },
-                  ],
-                }}
-                options={{
-                  plugins: {
-                    legend: {
-                      display: false,
-                    },
-                  },
-                }}
-              />
-            </div>
-          </div>
-          <h2 id={"Popular Screens"}>Screens</h2>
-          <div data-uk-grid={""}>
-            <div className={"uk-width-3-4@s"}>
-              <table
-                className={
-                  "uk-table uk-table-striped uk-table-hover uk-table-small uk-table-responsive"
-                }
-              >
-                <thead>
-                  <tr>
-                    <th>Width</th>
-                    <th>Pageviews</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Portrait</td>
-                    <td>{portrait}</td>
-                  </tr>
-                  <tr>
-                    <td>Landscape</td>
-                    <td>{landscape}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className={"uk-width-1-4@s"}>
-              <Chart
-                type={"doughnut"}
-                data={{
-                  labels: ["Portrait", "Landscape"],
-                  datasets: [
-                    {
-                      data: [],
-                      backgroundColor: chartColors,
-                      hoverOffset: 4,
-                    },
-                  ],
-                }}
-                options={{
-                  plugins: {
-                    legend: {
-                      display: false,
-                    },
-                  },
-                }}
-              />
-            </div>
-          </div>
+          <Referrers referrers={data?.referrers} chartColors={chartColors} />
         </div>
       </div>
       {loading && (

@@ -1,8 +1,7 @@
 import "chart.js/auto";
 import { Chart } from "react-chartjs-2";
-import { useEffect } from "react";
 
-export default function Times({ sessionsOverTime, pageviewsOverTime }) {
+export default function Times({ sessions, pageviews }) {
   return (
     <>
       <h2>Visitors Over Time</h2>
@@ -10,19 +9,17 @@ export default function Times({ sessionsOverTime, pageviewsOverTime }) {
         <Chart
           type={"line"}
           data={{
-            labels:
-              pageviewsOverTime &&
-              Object.keys(pageviewsOverTime)?.map((pageview) => pageview),
+            labels: [],
             datasets: [
               {
                 label: "Sessions",
-                data: sessionsOverTime,
+                data: sessions,
                 borderColor: "#ec008c",
                 hoverOffset: 4,
               },
               {
                 label: "Pageivews",
-                data: pageviewsOverTime,
+                data: pageviews,
                 borderColor: "#080005",
                 hoverOffset: 4,
               },

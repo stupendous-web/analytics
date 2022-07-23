@@ -2,11 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { Chart } from "react-chartjs-2";
 
-export default function Referrers({
-  pageviews,
-  referrerPageviews,
-  chartColors,
-}) {
+export default function Referrers({ referrers, chartColors }) {
   const removeProtocol = (url) => {
     if (url.startsWith("https://www.")) {
       return url.slice(12);
@@ -24,8 +20,8 @@ export default function Referrers({
   };
 
   const searchEngines = ["https://www.google.com/"];
-  const search = pageviews?.filter((pageview) =>
-    searchEngines.includes(pageview?.referrer)
+  const search = referrers?.filter((referrer) =>
+    searchEngines.includes(referrer.path)
   ).length;
 
   const socialMediaPlatforms = [
@@ -33,15 +29,15 @@ export default function Referrers({
     "https://l.facebook.com/",
     "https://www.reddit.com/",
   ];
-  const social = pageviews?.filter((pageview) =>
-    socialMediaPlatforms.includes(pageview?.referrer)
+  const social = referrers?.filter((referrer) =>
+    socialMediaPlatforms.includes(referrer.path)
   ).length;
 
-  const direct = pageviews?.filter(
-    (pageview) => pageview?.referrer === "Direct"
+  const direct = referrers?.filter(
+    (referrer) => referrer.path === "Direct"
   ).length;
 
-  const other = pageviews?.length - (search + social + direct);
+  const other = referrers?.length - (search + social + direct);
 
   return (
     <>
@@ -62,16 +58,17 @@ export default function Referrers({
               </tr>
             </thead>
             <tbody>
-              {referrerPageviews?.map((referrer, key) => {
+              {referrers?.map((referrer, key) => {
                 return (
                   <tr key={key}>
                     <td>
-                      {removeProtocol(referrer?.referrer)}{" "}
-                      <a href={referrer?.referrer}>
+                      {removeProtocol(referrer?.path)}{" "}
+                      <a href={referrer?.path}>
                         <FontAwesomeIcon icon={faUpRightFromSquare} />
                       </a>{" "}
                     </td>
-                    <td>{referrer?._count.referrer}</td>
+                    <td>{referrer?.sessions}</td>
+                    <td>{referrer?.pageviews}</td>
                   </tr>
                 );
               })}
@@ -106,12 +103,10 @@ export default function Referrers({
           <Chart
             type={"doughnut"}
             data={{
-              labels: referrerPageviews?.map((referrer) => referrer?.referrer),
+              labels: referrers?.map((referrer) => referrer?.path),
               datasets: [
                 {
-                  data: referrerPageviews?.map(
-                    (referrer) => referrer?._count.referrer
-                  ),
+                  data: referrers?.map((referrer) => referrer?.sessions),
                   backgroundColor: chartColors,
                   hoverOffset: 4,
                 },
