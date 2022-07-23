@@ -14,6 +14,7 @@ export default function Site() {
   const sections = ["Popular Sources", "Popular Pages", "Popular Screens"];
 
   const [days, setDays] = useState(7);
+  const [data, setData] = useState();
   const [sessions, setSessions] = useState();
   const [pageviews, setPageviews] = useState();
   const [pageviewsOverTime, setPageviewsOverTime] = useState();
@@ -48,10 +49,11 @@ export default function Site() {
       ? api + "pageviews/" + site + "/" + days
       : api + "pageviews/" + site;
     axios.get(url).then((response) => {
-      console.log(response.data.sessions);
+      setData(response.data);
       setSessions(response.data.sessions);
       setPageviews(response.data.pageviews);
       setPageviewsOverTime(response.data.pageviewsOverTime);
+      setSessionsOverTime(response.data.sessionsOverTime);
     });
     setLoading(false);
   };
@@ -120,7 +122,7 @@ export default function Site() {
             <div>
               <div className={"uk-card uk-card-secondary uk-card-body"}>
                 <h1 className={"uk-heading-large uk-margin-remove"}>
-                  {sessions && Object.keys(sessions).length}
+                  {data?.sessionsCount}
                 </h1>
                 <p>Sessions</p>
               </div>
@@ -128,7 +130,7 @@ export default function Site() {
             <div>
               <div className={"uk-card uk-card-secondary uk-card-body"}>
                 <h1 className={"uk-heading-large uk-margin-remove"}>
-                  {pageviews?.length}
+                  {data?.pageviewsCount}
                 </h1>
                 <p>Pageviews</p>
               </div>
@@ -153,7 +155,10 @@ export default function Site() {
               })}
             </ul>
           </div>
-          <Time pageviewsOverTime={pageviewsOverTime} />
+          <Time
+            sessionsOverTime={sessionsOverTime}
+            pageviewsOverTime={data?.pageviewsOverTime}
+          />
           {"referrer cmoponent"}
           <h2 id={"Popular Pages"}>Popular Pages</h2>
           <div data-uk-grid={""}>

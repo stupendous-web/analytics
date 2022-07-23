@@ -4,14 +4,13 @@ import { useEffect } from "react";
 
 export default function Times({ sessionsOverTime, pageviewsOverTime }) {
   useEffect(() => {
-    if (pageviewsOverTime) {
+    sessionsOverTime &&
       console.log(
-        Object.keys(pageviewsOverTime)?.map(
-          (pageview) => pageviewsOverTime[pageview].length
+        Object.keys(sessionsOverTime)?.map(
+          (session) => sessionsOverTime[session]
         )
       );
-    }
-  }, [pageviewsOverTime]);
+  });
   /*
 
 const [sessions, setSessions] = useState();
@@ -44,12 +43,18 @@ useEffect(() => {
               Object.keys(pageviewsOverTime)?.map((pageview) => pageview),
             datasets: [
               {
-                label: "Pageivews",
+                label: "Sessions",
                 data:
-                  pageviewsOverTime &&
-                  Object.keys(pageviewsOverTime)?.map(
-                    (pageview) => pageviewsOverTime[pageview].length
+                  sessionsOverTime &&
+                  Object.keys(sessionsOverTime)?.map(
+                    (session) => sessionsOverTime[session].length
                   ),
+                borderColor: "red",
+                hoverOffset: 4,
+              },
+              {
+                label: "Pageivews",
+                data: pageviewsOverTime,
                 borderColor: "#080005",
                 hoverOffset: 4,
               },
