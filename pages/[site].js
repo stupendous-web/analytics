@@ -14,13 +14,14 @@ export default function Site() {
   const sections = ["Popular Sources", "Popular Pages", "Popular Screens"];
 
   const [days, setDays] = useState(7);
-  const [pageviews, setPageviews] = useState();
-  const [sessionsOverTime, setSessionsOverTime] = useState();
-  const [pageviewsOverTime, setPageviewsOverTime] = useState();
   const [sessions, setSessions] = useState();
+  const [pageviews, setPageviews] = useState();
+  const [pageviewsOverTime, setPageviewsOverTime] = useState();
+  const [sessionsOverTime, setSessionsOverTime] = useState();
   const [portrait, setPortrait] = useState();
   const [landscape, setLandscape] = useState();
-  const [referrers, setReferrers] = useState();
+  const [referrerSessions, setReferrerSessions] = useState();
+  const [referrerPageviews, setReferrerPageviews] = useState();
   const [paths, setPaths] = useState();
 
   const chartColors = [
@@ -39,21 +40,24 @@ export default function Site() {
   const [loading, setLoading] = useState(true);
 
   const get = () => {
+    const api =
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:8000/"
+        : "https://analytics-api.stupendousweb.com/";
     const url = days
-      ? "/api/pageviews/" + site + "?days=" + days
-      : "/api/pageviews/" + site;
+      ? api + "pageviews/" + site + "/" + days
+      : api + "pageviews/" + site;
     axios.get(url).then((response) => {
+      console.log(response.data.sessions);
+      setSessions(response.data.sessions);
       setPageviews(response.data.pageviews);
-      setSessionsOverTime(response.data.sessionsOverTime);
       setPageviewsOverTime(response.data.pageviewsOverTime);
-      setSessions(response.data.sessions.length);
-      setReferrers(response.data.referrers);
-      setPaths(response.data.paths);
-      setLoading(false);
     });
+    setLoading(false);
   };
 
   useEffect(() => {
+    /*
     if (pageviews) {
       // Screen Sizes
       setPortrait(
@@ -63,6 +67,8 @@ export default function Site() {
         pageviews.filter((pageview) => pageview.height < pageview.width).length
       );
     }
+
+     */
   }, [pageviews]);
 
   useEffect(() => {
@@ -114,7 +120,7 @@ export default function Site() {
             <div>
               <div className={"uk-card uk-card-secondary uk-card-body"}>
                 <h1 className={"uk-heading-large uk-margin-remove"}>
-                  {sessions}
+                  {sessions && Object.keys(sessions).length}
                 </h1>
                 <p>Sessions</p>
               </div>
@@ -147,15 +153,8 @@ export default function Site() {
               })}
             </ul>
           </div>
-          <Time
-            sessionsOverTime={sessionsOverTime}
-            pageviewsOverTime={pageviewsOverTime}
-          />
-          <Referrers
-            pageviews={pageviews}
-            referrers={referrers}
-            chartColors={chartColors}
-          />
+          <Time pageviewsOverTime={pageviewsOverTime} />
+          {"referrer cmoponent"}
           <h2 id={"Popular Pages"}>Popular Pages</h2>
           <div data-uk-grid={""}>
             <div className={"uk-width-3-4@s"}>
@@ -238,14 +237,7 @@ export default function Site() {
                   labels: ["Portrait", "Landscape"],
                   datasets: [
                     {
-                      data: [
-                        pageviews?.filter(
-                          (pageview) => pageview.height > pageview.width
-                        ).length,
-                        pageviews?.filter(
-                          (pageview) => pageview.height < pageview.width
-                        ).length,
-                      ],
+                      data: [],
                       backgroundColor: chartColors,
                       hoverOffset: 4,
                     },

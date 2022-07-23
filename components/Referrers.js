@@ -2,7 +2,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { Chart } from "react-chartjs-2";
 
-export default function Referrers({ pageviews, referrers, chartColors }) {
+export default function Referrers({
+  pageviews,
+  referrerPageviews,
+  chartColors,
+}) {
   const removeProtocol = (url) => {
     if (url.startsWith("https://www.")) {
       return url.slice(12);
@@ -53,11 +57,12 @@ export default function Referrers({ pageviews, referrers, chartColors }) {
             <thead>
               <tr>
                 <th>Location</th>
+                <th>Sessions</th>
                 <th>Pageviews</th>
               </tr>
             </thead>
             <tbody>
-              {referrers?.map((referrer, key) => {
+              {referrerPageviews?.map((referrer, key) => {
                 return (
                   <tr key={key}>
                     <td>
@@ -101,10 +106,12 @@ export default function Referrers({ pageviews, referrers, chartColors }) {
           <Chart
             type={"doughnut"}
             data={{
-              labels: referrers?.map((referrer) => referrer?.referrer),
+              labels: referrerPageviews?.map((referrer) => referrer?.referrer),
               datasets: [
                 {
-                  data: referrers?.map((referrer) => referrer?._count.referrer),
+                  data: referrerPageviews?.map(
+                    (referrer) => referrer?._count.referrer
+                  ),
                   backgroundColor: chartColors,
                   hoverOffset: 4,
                 },
