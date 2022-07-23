@@ -156,7 +156,7 @@ export default function Site() {
             </ul>
           </div>
           <Time
-            sessionsOverTime={sessionsOverTime}
+            sessionsOverTime={data?.sessionsOverTime}
             pageviewsOverTime={data?.pageviewsOverTime}
           />
           {"referrer cmoponent"}
