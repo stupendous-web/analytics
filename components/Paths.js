@@ -41,6 +41,30 @@ export default function Paths({ paths, chartColors }) {
               labels: paths?.map((path) => path?.path),
               datasets: [
                 {
+                  data: paths?.map((path) => path?.sessions),
+                  backgroundColor: chartColors,
+                },
+              ],
+            }}
+            options={{
+              plugins: {
+                legend: {
+                  display: false,
+                },
+              },
+            }}
+          />
+        </div>
+        <div className={"uk-width-1-4@s"}>
+          <p className={"uk-text-bold uk-margin-small-top"}>
+            Pageviews per Page
+          </p>
+          <Chart
+            type={"doughnut"}
+            data={{
+              labels: paths?.map((path) => path?.path),
+              datasets: [
+                {
                   data: paths?.map((path) => path?.pageviews),
                   backgroundColor: chartColors,
                 },
