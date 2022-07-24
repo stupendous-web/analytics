@@ -14,12 +14,16 @@ export default function Times({ sessions, pageviews }) {
               {
                 label: "Sessions",
                 data: sessions,
-                borderColor: "#ec008c",
+                borderColor: "rgba(236, 0, 140, 1)",
+                backgroundColor: "rgba(236, 0, 140, .3)",
+                fill: true,
               },
               {
                 label: "Pageivews",
                 data: pageviews,
-                borderColor: "#080005",
+                borderColor: "rgba(236, 0, 140, .2)",
+                backgroundColor: "rgba(236, 0, 140, .1)",
+                fill: true,
               },
             ],
           }}
