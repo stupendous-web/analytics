@@ -44,7 +44,7 @@ export default function Referrers({ referrers, chartColors }) {
         !searchEngines.includes(referrer.path) &&
         !socialMediaPlatforms.includes(referrer.path) &&
         referrer.path !== "Direct"
-    )[0].sessions || 0;
+    )[0]?.sessions || 0;
 
   return (
     <>
