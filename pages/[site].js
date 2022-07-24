@@ -6,6 +6,7 @@ import "chart.js/auto";
 import Time from "../components/Times";
 import Referrers from "../components/Referrers";
 import Paths from "../components/Paths";
+import Screens from "../components/Screens";
 
 export default function Site() {
   const router = useRouter();
@@ -109,7 +110,7 @@ export default function Site() {
             <div>
               <div className={"uk-card uk-card-secondary uk-card-body"}>
                 <h1 className={"uk-heading-large uk-margin-remove"}>
-                  {data?.sessionsCount}
+                  {data?.sessionsCount || 0}
                 </h1>
                 <p>Sessions</p>
               </div>
@@ -117,7 +118,7 @@ export default function Site() {
             <div>
               <div className={"uk-card uk-card-secondary uk-card-body"}>
                 <h1 className={"uk-heading-large uk-margin-remove"}>
-                  {data?.pageviewsCount}
+                  {data?.pageviewsCount || 0}
                 </h1>
                 <p>Pageviews</p>
               </div>

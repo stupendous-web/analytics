@@ -1,9 +1,9 @@
 import { Chart } from "react-chartjs-2";
 
-export default function Paths({ paths, chartColors }) {
+export default function Screens({ screens }) {
   return (
     <>
-      <h2 id={"Pages"}>Pages</h2>
+      <h2 id={"Screens"}>Screens</h2>
       <div data-uk-grid={""}>
         <div className={"uk-width-1-2@s"}>
           <table
@@ -13,21 +13,22 @@ export default function Paths({ paths, chartColors }) {
           >
             <thead>
               <tr>
-                <th>Page</th>
+                <th>Size</th>
                 <th>Sessions</th>
                 <th>Pageviews</th>
               </tr>
             </thead>
             <tbody>
-              {paths?.map((path, key) => {
-                return (
-                  <tr key={key}>
-                    <td>{path?.path}</td>
-                    <td>{path?.sessions}</td>
-                    <td>{path?.pageviews}</td>
-                  </tr>
-                );
-              })}
+              <tr>
+                <td>Portrait</td>
+                <td>{screens?.portraitSessions}</td>
+                <td>{screens?.portraitPageviews}</td>
+              </tr>
+              <tr>
+                <td>Landscape</td>
+                <td>{screens?.landscapeSessions}</td>
+                <td>{screens?.landscapePageviews}</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -38,11 +39,11 @@ export default function Paths({ paths, chartColors }) {
           <Chart
             type={"doughnut"}
             data={{
-              labels: paths?.map((path) => path?.path),
+              labels: ["Portrait", "Landscape"],
               datasets: [
                 {
-                  data: paths?.map((path) => path?.pageviews),
-                  backgroundColor: chartColors,
+                  data: [screens?.portraitSessions, screens?.landscapeSessions],
+                  backgroundColor: ["red", "reen"],
                 },
               ],
             }}
