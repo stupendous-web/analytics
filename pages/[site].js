@@ -5,12 +5,13 @@ import "chart.js/auto";
 
 import Time from "../components/Times";
 import Referrers from "../components/Referrers";
+import Paths from "../components/Paths";
 
 export default function Site() {
   const router = useRouter();
   const { site } = router.query;
 
-  const sections = ["Popular Sources", "Popular Pages", "Popular Screens"];
+  const sections = ["Visitors", "Sources", "Pages", "Screens"];
 
   const [days, setDays] = useState(7);
   const [data, setData] = useState();
@@ -146,6 +147,7 @@ export default function Site() {
             pageviews={data?.pageviewsOverTime}
           />
           <Referrers referrers={data?.referrers} chartColors={chartColors} />
+          <Paths paths={data?.paths} chartColors={chartColors} />
         </div>
       </div>
       {loading && (

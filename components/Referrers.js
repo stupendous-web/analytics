@@ -42,7 +42,7 @@ export default function Referrers({ referrers, chartColors }) {
   return (
     <>
       {" "}
-      <h2 id={"Popular Sources"}>Popular Sources</h2>
+      <h2 id={"Sources"}>Sources</h2>
       <div data-uk-grid={""}>
         <div className={"uk-width-1-2@s"}>
           <table
@@ -76,7 +76,9 @@ export default function Referrers({ referrers, chartColors }) {
           </table>
         </div>
         <div className={"uk-width-1-4@s"}>
-          <p className={"uk-text-bold uk-margin-small-top"}>Referrals</p>
+          <p className={"uk-text-bold uk-margin-small-top"}>
+            Sessions per Type
+          </p>
           <Chart
             type={"doughnut"}
             data={{
@@ -85,7 +87,6 @@ export default function Referrers({ referrers, chartColors }) {
                 {
                   data: [search, social, direct, other],
                   backgroundColor: chartColors,
-                  hoverOffset: 4,
                 },
               ],
             }}
@@ -99,7 +100,9 @@ export default function Referrers({ referrers, chartColors }) {
           />
         </div>
         <div className={"uk-width-1-4@s"}>
-          <p className={"uk-text-bold uk-margin-small-top"}>Locations</p>
+          <p className={"uk-text-bold uk-margin-small-top"}>
+            Sessions per Location
+          </p>
           <Chart
             type={"doughnut"}
             data={{

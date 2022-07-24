@@ -4,7 +4,7 @@ import { Chart } from "react-chartjs-2";
 export default function Times({ sessions, pageviews }) {
   return (
     <>
-      <h2>Visitors Over Time</h2>
+      <h2 id={"Visitors"}>Visitors Over Time</h2>
       <div className={"uk-height-medium"}>
         <Chart
           type={"line"}
@@ -15,13 +15,11 @@ export default function Times({ sessions, pageviews }) {
                 label: "Sessions",
                 data: sessions,
                 borderColor: "#ec008c",
-                hoverOffset: 4,
               },
               {
                 label: "Pageivews",
                 data: pageviews,
                 borderColor: "#080005",
-                hoverOffset: 4,
               },
             ],
           }}
