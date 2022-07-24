@@ -34,7 +34,7 @@ export default function Screens({ screens }) {
         </div>
         <div className={"uk-width-1-4@s"}>
           <p className={"uk-text-bold uk-margin-small-top"}>
-            Sessions per Page
+            Sessions per Screen
           </p>
           <Chart
             type={"doughnut"}
@@ -43,7 +43,34 @@ export default function Screens({ screens }) {
               datasets: [
                 {
                   data: [screens?.portraitSessions, screens?.landscapeSessions],
-                  backgroundColor: ["red", "reen"],
+                  backgroundColor: ["#ec008c", "#ba0070"],
+                },
+              ],
+            }}
+            options={{
+              plugins: {
+                legend: {
+                  display: false,
+                },
+              },
+            }}
+          />
+        </div>
+        <div className={"uk-width-1-4@s"}>
+          <p className={"uk-text-bold uk-margin-small-top"}>
+            Pageviews per Screen
+          </p>
+          <Chart
+            type={"doughnut"}
+            data={{
+              labels: ["Portrait", "Landscape"],
+              datasets: [
+                {
+                  data: [
+                    screens?.portraitPageviews,
+                    screens?.landscapePageviews,
+                  ],
+                  backgroundColor: ["#ec008c", "#ba0070"],
                 },
               ],
             }}

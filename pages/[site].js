@@ -149,6 +149,7 @@ export default function Site() {
           />
           <Referrers referrers={data?.referrers} chartColors={chartColors} />
           <Paths paths={data?.paths} chartColors={chartColors} />
+          <Screens screens={data?.screens} />
         </div>
       </div>
       {loading && (
