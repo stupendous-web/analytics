@@ -47,31 +47,10 @@ export default function Site() {
   };
 
   useEffect(() => {
-    /*
-    if (pageviews) {
-      // Screen Sizes
-      setPortrait(
-        pageviews.filter((pageview) => pageview.height > pageview.width).length
-      );
-      setLandscape(
-        pageviews.filter((pageview) => pageview.height < pageview.width).length
-      );
-    }
-
-     */
-  }, [data]);
-
-  useEffect(() => {
     if (!router.isReady) return;
+    setLoading(true);
     get();
-  }, [router.isReady]);
-
-  useEffect(() => {
-    if (days !== 7) {
-      setLoading(true);
-      get();
-    }
-  }, [days]);
+  }, [router.isReady, days]);
 
   return (
     <>
