@@ -20,24 +20,31 @@ export default function Referrers({ referrers, chartColors }) {
   };
 
   const searchEngines = ["https://www.google.com/"];
-  const search = referrers?.filter((referrer) =>
-    searchEngines.includes(referrer.path)
-  ).length;
+  const search =
+    referrers?.filter((referrer) => searchEngines.includes(referrer.path))[0]
+      ?.sessions || 0;
 
   const socialMediaPlatforms = [
     "https://t.co/",
     "https://l.facebook.com/",
     "https://www.reddit.com/",
   ];
-  const social = referrers?.filter((referrer) =>
-    socialMediaPlatforms.includes(referrer.path)
-  ).length;
+  const social =
+    referrers?.filter((referrer) =>
+      socialMediaPlatforms.includes(referrer.path)
+    )[0]?.sessions || 0;
 
-  const direct = referrers?.filter(
-    (referrer) => referrer.path === "Direct"
-  ).length;
+  const direct =
+    referrers?.filter((referrer) => referrer.path === "Direct")[0]?.sessions ||
+    0;
 
-  const other = referrers?.length - (search + social + direct);
+  const other =
+    referrers?.filter(
+      (referrer) =>
+        !searchEngines.includes(referrer.path) &&
+        !socialMediaPlatforms.includes(referrer.path) &&
+        referrer.path !== "Direct"
+    )[0].sessions || 0;
 
   return (
     <>
