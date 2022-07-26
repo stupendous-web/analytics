@@ -28,6 +28,7 @@ export default function Referrers({ referrers, chartColors }) {
     "https://t.co/",
     "https://l.facebook.com/",
     "https://www.reddit.com/",
+    "https://l.instagram.com/",
   ];
   const social =
     referrers?.filter((referrer) =>
