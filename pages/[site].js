@@ -126,7 +126,11 @@ export default function Site() {
             sessions={data?.sessionsOverTime}
             pageviews={data?.pageviewsOverTime}
           />
-          <Referrers referrers={data?.referrers} chartColors={chartColors} />
+          <Referrers
+            referrers={data?.referrers}
+            types={data?.referrerTypes}
+            chartColors={chartColors}
+          />
           <Paths paths={data?.paths} chartColors={chartColors} />
           <Screens screens={data?.screens} />
         </div>

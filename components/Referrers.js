@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { Chart } from "react-chartjs-2";
 
-export default function Referrers({ referrers, chartColors }) {
+export default function Referrers({ referrers, types, chartColors }) {
   const removeProtocol = (url) => {
     if (url.startsWith("https://www.")) {
       return url.slice(12);
@@ -19,37 +19,8 @@ export default function Referrers({ referrers, chartColors }) {
     return url;
   };
 
-  const searchEngines = ["https://www.google.com/"];
-  const search =
-    referrers?.filter((referrer) => searchEngines.includes(referrer.path))[0]
-      ?.sessions || 0;
-
-  const socialMediaPlatforms = [
-    "https://t.co/",
-    "https://l.facebook.com/",
-    "https://www.reddit.com/",
-    "https://l.instagram.com/",
-  ];
-  const social =
-    referrers?.filter((referrer) =>
-      socialMediaPlatforms.includes(referrer.path)
-    )[0]?.sessions || 0;
-
-  const direct =
-    referrers?.filter((referrer) => referrer.path === "Direct")[0]?.sessions ||
-    0;
-
-  const other =
-    referrers?.filter(
-      (referrer) =>
-        !searchEngines.includes(referrer.path) &&
-        !socialMediaPlatforms.includes(referrer.path) &&
-        referrer.path !== "Direct"
-    )[0]?.sessions || 0;
-
   return (
     <>
-      {" "}
       <h2 id={"Sources"}>Sources</h2>
       <div data-uk-grid={""}>
         <div className={"uk-width-1-2@s"}>
@@ -93,7 +64,12 @@ export default function Referrers({ referrers, chartColors }) {
               labels: ["Search", "Social", "Direct", "Other"],
               datasets: [
                 {
-                  data: [search, social, direct, other],
+                  data: [
+                    types?.search,
+                    types?.social,
+                    types?.direct,
+                    types?.other,
+                  ],
                   backgroundColor: chartColors,
                 },
               ],
